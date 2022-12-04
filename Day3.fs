@@ -17,13 +17,27 @@ module Day3 =
         let set2 = comp2.ToCharArray() |> Set.ofArray
         Set.intersect set1 set2
 
+    let prioF = (fun c -> if System.Char.IsLower c then int c - 96 else int c - 38)
+
     let prioritize s =
-        s
-        |> split
-        |> findDouble
-        |> Set.map (fun c -> if System.Char.IsLower c then int c - 96 else int c - 38)
-        |> Set.toArray
-        |> Array.sum
+        s |> split |> findDouble |> Set.map prioF |> Set.toArray |> Array.sum
 
     let part1 () =
         InputFile |> File.ReadAllLines |> Array.sumBy prioritize
+
+    let findBadge =
+        function
+        | [| (s1: string); (s2: string); (s3: string) |] ->
+            Set.intersect (s1.ToCharArray() |> Set.ofArray) (s2.ToCharArray() |> Set.ofArray)
+            |> Set.intersect (s3.ToCharArray() |> Set.ofArray)
+            |> Set.toArray
+            |> Array.head
+        | _ -> failwith "not a group array of 3"
+
+    let part2 () =
+        let lines = InputFile |> File.ReadAllLines
+
+        lines
+        |> Array.splitInto (lines.Length / 3)
+        |> Array.map findBadge
+        |> Seq.sumBy prioF
