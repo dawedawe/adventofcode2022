@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Day15.fs" />
     <Compile Include="Day14.fs" />
     <Compile Include="Program.fs" />
     <Content Include="*Input.txt">
